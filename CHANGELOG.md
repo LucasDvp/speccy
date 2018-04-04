@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.5.4] - 2018-04-04
+### Changed
+- `properties` rule will now ignore extensions, so `foo: 'a', x-bar: 'b'` is only 1 property.
+### Fixed
+- Disabled `reference-components-regex` rule until resolver can allow it to work
+
 ## [0.5.3] - 2018-03-29
 ### Fixed
 - Warn about YAML/JSON parsing errors in referenced files ([#36])

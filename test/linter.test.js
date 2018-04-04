@@ -25,7 +25,7 @@ function testProfile(profile) {
                 else {
                     it(JSON.stringify(test.input) + ' is not valid', done => {
                         const actualRuleErrors = options.lintResults.map(result => result.rule.name);
-                        test.expectedRuleErrors.should.deepEqual(actualRuleErrors);
+                        actualRuleErrors.should.deepEqual(test.expectedRuleErrors);
                         done();
                     });
                 }
@@ -127,6 +127,39 @@ describe('linter.js', () => {
                 it('errors when string is too long', done => {
                     const input = { summary: '123456' };
                     lintAndExpectErrors(rule, input, ['gotta-be-five']);
+                    done();
+                });
+            });
+
+            context('properties', () => {
+                const rule = {
+                    "name": "exactly-two-things",
+                    "object": "*",
+                    "enabled": true,
+                    "properties": 2
+                };
+
+                it('one is too few', done => {
+                    const input = { foo: 'a' };
+                    lintAndExpectErrors(rule, input, ['exactly-two-things']);
+                    done();
+                });
+
+                it('three is too many', done => {
+                    const input = { foo: 'a', bar: 'b', 'baz': 'c' };
+                    lintAndExpectErrors(rule, input, ['exactly-two-things']);
+                    done();
+                });
+
+                it('two is just right', done => {
+                    const input = { foo: 'a', bar: 'b' };
+                    lintAndExpectValid(rule, input);
+                    done();
+                });
+
+                it('two things and an extension is two things', done => {
+                    const input = { foo: 'a', bar: 'b', 'x-baz': 'c' };
+                    lintAndExpectValid(rule, input);
                     done();
                 });
             });
